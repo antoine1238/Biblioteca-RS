@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Autores</h1>
+    
+    {% if authors %}        
+        <ul>
+            {% for a in authors %}
+                <li>{{a.username}}</li>            
+                <li>{{a.email}}</li>            
+                <li>{{a.first_name}}</li>            
+                <li>{{a.last_name}}</li>            
+                <li>{{a.description}}</li>            
+                <li>{{a.nationality}}</li>            
+                <li>{{a.sex}}</li>            
+                <img src="{{a.photo.url}}"></img>            
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>no hay autores</h3>
+    
+    {% endif %}
+</body>
+</html>

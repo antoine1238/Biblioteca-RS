@@ -8,6 +8,7 @@ from django.db import models
 class AuthorManager(BaseUserManager):
 
     def create_user(self, username, first_name, password, email):
+        """ We only fill in the required fields, since the author in his profile has the option to add more information. """
         author = self.model(
             username = username,
             first_name = first_name,
@@ -20,6 +21,7 @@ class AuthorManager(BaseUserManager):
         return author
 
     def create_superuser(self, username, first_name, password, email):
+        """ the difference is that here we assign the author the admin permission. """
         author = self.create_user(
             username = username,
             first_name = first_name,

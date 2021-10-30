@@ -12,6 +12,7 @@ urlpatterns = [
     path('', Home.as_view(), name='home'),
 
     path('author/', include("apps.author.urls"), name="author"),
+    path('books/', include("apps.books.urls"), name="books"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

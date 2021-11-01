@@ -35,17 +35,9 @@ class Book(models.Model):
 
 
 class Review(models.Model):
-    " Each book will have reviews that will be shown in the details of the book. in addition to a score based on 5 stars to determine the value. "
-    STARS = (
-        ("1", "one star"),
-        ("2", "Two stars"),
-        ("3", "Three stars"),
-        ("4", "Four stars"),
-        ("5", "Five stars"),
-    )
+    " Each book will have reviews that will be shown in the details of the book. "
     message = models.TextField("Review of the autor", null=False, blank=False)
-    stars = models.CharField(max_length=1, choices=STARS, null=False, blank=False)
-    autor = models.ForeignKey("author.Author", on_delete=models.CASCADE)  
+    author = models.ForeignKey("author.Author", on_delete=models.CASCADE)  
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
     class Meta:
@@ -55,6 +47,27 @@ class Review(models.Model):
         verbose_name_plural = 'Reviews'
 
     def __str__(self):
-        return f"{self.autor} / {self.book}"
+        return f"{self.author} / {self.book}"
 
     
+class Star(models.Model):
+    """ stars that will rate the quality of the book. """
+    STARS = (
+        ("1", "one star"),
+        ("2", "Two stars"),
+        ("3", "Three stars"),
+        ("4", "Four stars"),
+        ("5", "Five stars"),
+    )
+    stars = models.CharField(max_length=1, choices=STARS, null=False, blank=False)
+    author = models.ForeignKey("author.Author", on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    class Meta:
+        """Meta definition for Book."""
+
+        verbose_name = 'Star'
+        verbose_name_plural = 'Stars'
+
+    def __str__(self):
+        return f"{self.book}-{self.author} <{self.stars} stars>"

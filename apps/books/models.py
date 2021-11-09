@@ -1,5 +1,8 @@
+#Django
 from django.db import models
 
+# py
+import os
 
 class Category(models.Model):
     """ Categories of books, to order them. """
@@ -17,11 +20,13 @@ class Category(models.Model):
 class Book(models.Model):
     """Model definition for Book."""
     title = models.CharField("Title of the book", max_length=80, unique=True, null=False, blank=False)
-    autor = models.ForeignKey("author.Author", models.SET_NULL, blank=True, null=True,)
+    author = models.ForeignKey("author.Author", on_delete=models.CASCADE, blank=False, null=False,)
     category = models.ManyToManyField(Category)
-    synopsis = models.CharField(max_length=255, null=True, blank=True)
-    photo = models.ImageField("Photo of the book", upload_to="books_img", null=True, blank=True)
+    synopsis = models.CharField(max_length=255, null=False, blank=False)
+    photo = models.ImageField("Photo of the book", upload_to="books_img", null=False, blank=False)
+    file = models.FileField("File of the book", upload_to="books_pdf", null=False, blank=False)
     publication_date = models.DateField(auto_now_add=True)
+    slug = models.SlugField(null=True, unique=True)
 
     class Meta:
         """Meta definition for Book."""
@@ -33,6 +38,26 @@ class Book(models.Model):
         """Unicode representation of Book."""
         return self.title
 
+    def get_absolute_url(self): 
+        """its value is the model slug"""
+        from django.urls import reverse
+        return reverse('detail_book', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs): 
+        """ To save the slug automatically.""" 
+        if not self.slug:
+            self.slug = self.title.replace(" ", "-")
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        """ In charge of deleting the files corresponding to the "file" and "photo" fields.  """
+        if os.path.isfile(self.file.path):
+            os.remove(self.file.path)
+
+        if os.path.isfile(self.photo.path):
+            os.remove(self.photo.path)
+            
+        super(Book, self).delete(*args, **kwargs)
 
 class Review(models.Model):
     " Each book will have reviews that will be shown in the details of the book. "

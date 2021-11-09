@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+{% block cover-page %}
+{% endblock cover-page %}
+
+
+{% block categories %}
+{% endblock categories %}
+    
+
+{% block section %}
+    <div class="container flex flex-wrap justify-center bg-red-300 mx-auto h-auto mt-10 p-5 lg:w-3/5">
+         <form method="post">
+            {% csrf_token %}
+            <p class="font-bold text-center">Estas seguro de eliminar el libro "{{ object.title }}"?</p>
+            
+            <div class="text-center m-5">
+                <input class="p-3 bg-red-600 text-white rounded-lg" type="submit" value="Eliminar">
+                <a class="p-3 bg-gray-600 text-white rounded-lg" href="{% url 'index' %}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+    <br>
+{% endblock section %}
+    
+   

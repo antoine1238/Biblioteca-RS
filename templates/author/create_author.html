@@ -1,0 +1,187 @@
+{% extends 'index.html' %}
+
+{% block cover-page %}
+{% endblock cover-page %}
+
+{% block categories %}
+{% endblock categories %}
+  
+{% block section %}
+<section class=" py-1 bg-blueGray-50">
+  <div class="w-full lg:w-8/12 px-4 mx-auto mt-6">
+    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 border-0">
+      <div class="rounded-t bg-blue-500 mb-0 px-6 py-6">
+        <div class="text-center flex justify-between">
+          <h1 class="text-white text-xl font-bold">
+            Creación de cuenta
+          </h1>
+        </div>
+      </div>
+      <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+            datos necesarios
+          </h6>
+          <!-- error -->
+          
+          {% if error %}
+            <h6 class="text-red-600 text-sm mt-3 mb-6 font-bold uppercase">
+              {{error}}
+            </h6>
+          {% endif %}
+            
+          <div class="flex flex-wrap">
+
+            <!-- usuario -->
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  usuario
+                </label>
+                {{form.username}}
+              </div>
+            </div>
+            
+            <!-- email -->
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  correo electrónico
+                </label>
+                {{form.email}}
+              </div>
+            </div>
+
+            <!-- nombres -->
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  nombres 
+                </label>
+                {{form.first_name}}
+              </div>
+            </div>
+
+            <!-- apellidos -->
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2">
+                  apellidos
+                </label>
+                {{form.last_name}}
+              </div>
+            </div>
+
+          <!-- password_1 -->
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  contraseña
+                </label>
+                {{form.password_1}}
+              </div>
+            </div>
+
+            <!-- password_2 -->
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  repite la contraseña
+                </label>
+                {{form.password_2}}
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-6 border-b-1 border-blueGray-300">
+  
+          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+            datos opcionales 
+          </h6>
+          <div class="flex flex-wrap">
+
+            <!-- descripción corta-->
+            <div class="w-full lg:w-12/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  descripción corta
+                </label>
+                {{form.description}}
+              </div>
+            </div>
+
+            <!-- descripción larga -->
+            <div class="w-full lg:w-12/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  descripción larga
+                </label>
+                {{form.big_description}}
+              </div>
+            </div>
+
+            <!-- foto de perfil -->
+            <div class="w-full lg:w-4/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  foto de perfil
+                </label>
+                {{form.photo}}
+              </div>
+            </div>
+
+            <!-- nacionalidad -->
+            <div class="w-full lg:w-4/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  nacionalidad
+                </label>
+                {{form.nationality}}
+              </div>
+            </div>
+
+            <!-- sexo -->
+            <div class="w-full lg:w-4/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                  genero
+                </label>
+                {{form.sex}}
+              </div>
+            </div>
+          </div>
+          
+          <!-- botón -->
+          <div class="w-full lg:w-12/12 px-4">
+            <div class="relative w-full mb-3">
+              <button type="submit" class="block capitalize mx-auto w-full  p-3 bg-green-200 text-blueGray-600 text-xs font-bold mb-2">
+                crear usuario
+              </button>
+            </div>
+          </div>
+
+          <hr class="mt-6 border-b-1 border-blueGray-300">
+  
+          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+            información de interés
+          </h6>
+          <div class="flex flex-wrap">
+            <div class="w-full lg:w-12/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  sobre tus datos introducidos
+                </label>
+                <p>Esta página es solo un proyecto con motivo demostrativo, por lo que ninguno de los datos que usted ingrese los voy a usar. gracias!</p>
+                <p>Si llegas a encontrar un error te agradecería que me dejases un mensaje al correo &#128578;</p> 
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+      </div>
+  </section>
+  
+{% endblock section %}
+  

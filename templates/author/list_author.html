@@ -1,0 +1,72 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+{% block categories %}
+{% endblock categories %}
+    
+    
+
+{% block section %}
+    
+<body class=" h-screen overflow-hidden flex items-center justify-center" style="background: #fff;">
+    <div class="mx-auto">
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-12">
+        <div class="text-center pb-12">
+            <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading text-black">
+                Conoce el trabajo de otros autores           
+            </h1>
+
+            <h2 class="text-base font-bold text-indigo-600">
+                para descargar y disfrutar de todos lo libros que quieras
+            </h2>
+            <br>
+            <!-- barra busqueda -->
+            <form method="POST">
+                {% csrf_token %}
+                <input class="p-3" type="text" placeholder="Jordan peterson.." name="search">
+                <a class="pl-3 inline-block no-underline hover:text-black " href="#">
+                    <button class="p-3 bg-green-300 hover:bg-green-400 rounded-lg" type="submit">
+                        Buscar
+                    </button>
+                </a>
+            </form>
+        </div>
+
+        <!-- autores -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for a in authors %}
+                <div class="w-full bg-gray-900 rounded-lg sahdow-lg p-12 flex flex-col justify-center items-center">
+                <a href="{% url 'detail_author' a.username %}">
+                    <div class="mb-8">
+                        <!-- foto -->
+                        {% if a.photo %}
+                            <img class="object-center object-cover rounded-full h-36 w-36" src="{{ a.photo.url }}" alt="photo">
+                        {% else %}
+                            <img class="object-center object-cover rounded-full h-36 w-36" src="https://as2.ftcdn.net/v2/jpg/00/65/77/27/500_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg" alt="photo">
+                        {% endif %}
+                            
+                    </div>
+                    <div class="text-center">
+                        <!-- nombre -->
+                        <p class="text-xl text-white font-bold mb-2 capitalize">{{a.first_name}}</p>
+                </a>
+                    <!-- descripción -->
+                    {% if a.description %}
+                        <p class="text-base text-gray-400 font-normal text-left">{{a.description}}</p>
+                    {% else %} 
+                    {% endif %}
+                    
+                    <!-- nacionalidad -->
+                    {% if a.nationality %}
+                        <p class="text-base font-bold text-gray-400 font-normal">{{a.nationality}}</p>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+</body>
+{% endblock section %}

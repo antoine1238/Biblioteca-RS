@@ -111,7 +111,7 @@ class AuthorEditView(View):
         form = self.form_class(request.POST, request.FILES, instance = user)
         if form.is_valid():
             form.save()
-            return redirect("index")
+            return redirect("detail_author", username=username) 
         else:
             return render(request, "400.html", {"message":"algo pasó y no se pudo guardar"})
             

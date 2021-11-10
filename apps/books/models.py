@@ -20,14 +20,18 @@ class Category(models.Model):
 class Book(models.Model):
     """Model definition for Book."""
     title = models.CharField("Title of the book", max_length=80, unique=True, null=False, blank=False)
-    author = models.ForeignKey("author.Author", on_delete=models.CASCADE, blank=False, null=False,)
-    category = models.ManyToManyField(Category)
-    synopsis = models.CharField(max_length=255, null=False, blank=False)
+    author = models.ForeignKey("author.Author", models.SET_NULL, blank=True, null=True,)
+    author_book = models.CharField("author of the book", max_length=80, null=False, blank=False)
+    category = models.ManyToManyField(Category) 
+    synopsis = models.TextField(null=False, blank=False)
     photo = models.ImageField("Photo of the book", upload_to="books_img", null=False, blank=False)
     file = models.FileField("File of the book", upload_to="books_pdf", null=False, blank=False)
     publication_date = models.DateField(auto_now_add=True)
-    slug = models.SlugField(null=True, unique=True)
 
+    # automatically
+    short_synopsis = models.CharField(max_length=255, null=True, blank=True) # se rellenará automaticamente en base al "synopsis" field
+    slug = models.SlugField(null=True, unique=True)
+    
     class Meta:
         """Meta definition for Book."""
 
@@ -36,7 +40,7 @@ class Book(models.Model):
 
     def __str__(self):
         """Unicode representation of Book."""
-        return self.title
+        return f"{self.title}, {self.author_book}"
 
     def get_absolute_url(self): 
         """its value is the model slug"""
@@ -44,7 +48,8 @@ class Book(models.Model):
         return reverse('detail_book', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs): 
-        """ To save the slug automatically.""" 
+        """ To save the slug and short_synopsis automatically.""" 
+        self.short_synopsis = self.synopsis[:255]
         if not self.slug:
             self.slug = self.title.replace(" ", "-")
         return super().save(*args, **kwargs)

@@ -41,9 +41,6 @@ class BookCreateView(CreateView):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            author = int(request.POST["author"])
-            form.author = author
-            
             name_file = str(form.cleaned_data["file"])
             if not name_file.endswith('.pdf'):
                 context = {
@@ -60,6 +57,41 @@ class BookCreateView(CreateView):
             return render(request, self.template_name, self.get_context_data())
 
 
+class BookUpdateView(View):
+    model = Book
+    form_class = BookEditForm
+    template_name = "book/edit_book.html"
+
+    def get(self, request, slug, *args, **kwargs):
+        book = Book.objects.get(slug=slug)
+        context = {
+            "book": book,
+            "form":self.form_class(instance=book)
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, slug, *args, **kwargs):
+        book = Book.objects.get(slug=slug)
+        form = self.form_class(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            name_file = str(form.cleaned_data["file"])
+            if not name_file.endswith('.pdf'):
+                context = {
+                    "book": book,
+                    "form": self.form_class(instance=book),
+                    "error": "No has ingresado un archivo PDF"
+                }
+                return render(request, self.template_name, context)
+            else:
+                form.save()
+                return redirect("detail_book", slug=slug)
+        else:
+            context = {
+                "book": book,
+                "form": self.form_class(instance=book),
+                "error": "No has ingresado datos validos"
+            }
+            return render(request, self.template_name, context)
 
     
 class BookDeleteView(DeleteView):

@@ -1,9 +1,60 @@
-<h1>detail_book</h1>
+{% extends 'index.html' %}
 
 
-{% if book %}
+{% block categories %}
+{% endblock categories %}
+
+
+{% block cover-page %}
     
-    {{book.title}}
+{% endblock cover-page %}
+    
+    
+
+{% block section %}
         
-{% endif %}
+<section class="max-w-6xl text-center mx-auto px-4 sm:px-6 lg:px-4 py-12">
+    <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl font-heading capitalize text-gray-900">
+        {{book.title}}
+    </h1>
+    <a href="{% url 'detail_author' book.author.username %}">
+        <h2 class="text-base font-bold capitalize text-indigo-600">{{book.author.first_name}}</h2>
+    </a>
     
+    <br>
+    <div class="grid grid-cols-1 gap-6">
+
+        <!-- libro -->
+        <div class="w-full bg-white rounded-lg sahdow-lg flex flex-col md:flex-row">
+            <!-- foto -->
+            <div class="w-full md:w-2/5 h-100">
+                {% if book.photo %}
+                    <img class="object-center rounded-lg object-cover w-full h-full" src="{{book.photo.url}}" alt="photo">
+                {% else %}
+                    <img class="object-center rounded-lg object-cover w-full h-full" src="https://2.bp.blogspot.com/-lvuSxpb1jXc/Ub5nTo-rPCI/AAAAAAAAWzw/q3aV2_kjgwI/s1600/libros+(1).jpg" alt="photo">
+                {% endif %}
+                <!-- read or download -->
+                <div class="flex justify-around  items-end">
+                    <a class="text-base text-left leading-relaxed text-white font-normal bg-red-400 rounded-lg px-3 my-2 shadow-lg" href="{{book.file.url}}">Leer / Descargar</a>
+                    <a class="text-base text-left leading-relaxed text-white font-normal bg-blue-400 rounded-lg px-3 my-2 shadow-lg" href="{% url 'edit_book' book.slug %}">Editar Información</a>
+                </div>
+            </div>
+            <div class="w-full my-5 md:w-4/5 text-left p-6 md:p-4 space-y-2 lg:my-0">
+                <!-- nombres -->
+                <p class="text-xl text-gray-700 font-bold capitalize">{{book.title}}</p>
+                <!-- email -->
+                <a href="#" class="text-base text-gray-400 font-normal capitalize">escrito por: {{book.author_book}}</a>
+
+                <!-- descripcion -->
+                <p class="text-base leading-relaxed text-gray-500 font-normal">{{book.synopsis}}</p>
+
+                <br><br><br>
+                <p class="text-base leading-relaxed text-gray-500 font-normal">{{book.short_synopsis}}</p>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+        
+{% endblock section %}

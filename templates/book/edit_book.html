@@ -22,25 +22,22 @@
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <input name="author" class="hidden" type="text" value="{{request.user.id}}">
-
-                <!-- title -->
+                <!-- titulo -->
                 <h1 class="">Titulo</h1>{{form.title}}
 
-                <!-- title -->
+                <!-- autor -->
                 <h1 class="">Autor</h1>{{form.author_book}}
                 
                 <!-- sinopsis -->
                 <h1 class="">Sinopsis</h1>{{form.synopsis}}
 
-                <!-- categoria -->
-                <h1 class="">Categoria/s</h1>{{form.category}}
-
                 <!-- photo -->
-                <h1 class="">Portada</h1>{{form.photo}}
+                <h1 class="">Portada</h1><p>{{book.photo.url}}</p>
+                {{form.photo}}
 
                 <!-- File -->
-                <h1 class="">Archivo PDF</h1>{{form.file}}
+                <h1 class="">Archivo PDF</h1><p>{{book.file.url}}</p>
+                {{form.file}}
 
                 <!-- button -->
                 <button type="submit" class=" block rounded-lg bg-blue-700 w-4/5 mx-auto my-2 text-white p-1 shadow-md lg:w-3/5">Publicar</button>

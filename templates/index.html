@@ -75,16 +75,20 @@
 {% block nav %}    
     <!--Nav-->
     <nav class="relative px-4 py-4 flex justify-between items-center bg-white mx-5">
-        {% if request.user.photo %}
-            <a href="{% url 'detail_author' request.user.username %}">
-                <img class="object-center object-cover rounded-full h-20 w-20" src="{{ request.user.photo.url }}" alt="photo">
-            </a>
-        {% else %}
-            <a href="{% url 'detail_author' request.user.username %}">
-                <img class="object-center object-cover rounded-full h-20 w-20" src="https://as2.ftcdn.net/v2/jpg/00/65/77/27/500_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg" alt="photo">
-            </a>
+        <!-- photo of the user -->
+        
+        {% if user.is_authenticated %}
+            {% if request.user.photo %}
+                <a href="{% url 'detail_author' request.user.username %}">
+                    <img class="object-center object-cover rounded-full h-20 w-20" src="{{ request.user.photo.url }}" alt="photo">
+                </a>
+            {% else %}
+                <a href="{% url 'detail_author' request.user.username %}">
+                    <img class="object-center object-cover rounded-full h-20 w-20" src="https://as2.ftcdn.net/v2/jpg/00/65/77/27/500_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg" alt="photo">
+                </a>
+            {% endif %}
         {% endif %}
-		<a class="text-3xl font-bold leading-none" href="#">
+		<a class="text-3xl font-bold leading-none" href="{% url 'index' %}">
 			<p>Biblioteca RS</p>
 		</a>
 
@@ -111,16 +115,25 @@
 				</svg>
 			</li>
 			<li><a class="text-sm text-gray-400 hover:text-gray-500" href="{% url 'create_book' %}">Publicar libro</a></li>
+            
+            {% if user.is_authenticated %}
+                <li class="text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                    </svg>
+                </li>
+                <li><a class="text-sm text-gray-400 hover:text-gray-500" href="{% url 'logout' %}">Logout</a></li>
+            {% endif %}
 		</ul>
         
         
             
         
-        {% if not request.user %}
-            <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="#">Ingresar</a>
+        {% if not user.is_authenticated %}
+            <a class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="{% url 'login' %}">Login</a>
             <a class="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="{% url 'create_author' %}">Registrarse</a>
         {% else %}
-
+            <!-- seguir -->
         {% endif %}
             
 	</nav>
@@ -139,10 +152,24 @@
 				</button>
 			</div>
 			<div>
+                <!-- photo of the user -->
+                <div class="flex justify-center my-3">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'detail_author' request.user.username %}">
+                            {% if request.user.photo %}
+                                <img class="object-center object-cover rounded-full h-20 w-20" src="{{ request.user.photo.url }}" alt="photo">
+                            {% else %}
+                                <img class="object-center object-cover rounded-full h-20 w-20" src="https://as2.ftcdn.net/v2/jpg/00/65/77/27/500_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg" alt="photo">
+                        </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
 				<ul>
-                    <li class="mb-1">
-						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="{% url 'index' %}">Mi Perfil</a>
-					</li>
+                    {% if user.is_authenticated %}
+                        <li class="mb-1">
+                            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="{% url 'index' %}">Mi Perfil</a>
+                        </li>
+                    {% endif %}
 					<li class="mb-1">
 						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="{% url 'index' %}">Home</a>
 					</li>
@@ -152,22 +179,26 @@
 					<li class="mb-1">
 						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="{% url 'create_book' %}">Subir un libro</a>
 					</li>
-					<li class="mb-1">
-						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="#">Logout</a>
-					</li>
+                    
+                    {% if user.is_authenticated %}
+                        <li class="mb-1">
+                            <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% endif %}
+                        
 				</ul>
 			</div>
 			<div class="mt-auto">
 				<div class="pt-6">
                     
-                    {% if not request.user %}
-                        <a class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl" href="#">Ingresar</a>
+                    {% if not user.is_authenticated %}
+                        <a class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl" href="{% url 'login' %}">Login</a>
                         <a class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl" href="{% url 'create_author' %}">Registrarse</a> 
                     {% endif %}
                         
 				</div>
 				<p class="my-4 text-xs text-center text-gray-400">
-					<span>Copyright © 2021</span>
+					<span>Antoine manuel © 2021</span>
 				</p>
 			</div>
 		</nav>

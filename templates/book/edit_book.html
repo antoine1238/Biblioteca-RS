@@ -40,7 +40,8 @@
                 {{form.file}}
 
                 <!-- button -->
-                <button type="submit" class=" block rounded-lg bg-blue-700 w-4/5 mx-auto my-2 text-white p-1 shadow-md lg:w-3/5">Publicar</button>
+                <button type="submit" class=" block rounded-lg bg-blue-500 w-4/5 mx-auto my-3 text-white p-1 shadow-md lg:w-3/5">Guardar cambios</button>
+                <a href="{% url 'delete_book' book.slug %}" class=" block rounded-lg bg-red-500 w-4/5 mx-auto my-3 text-white p-1 shadow-md lg:w-3/5">Eliminar libro</a>
             </form>
         </div>
     </div>

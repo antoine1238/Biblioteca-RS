@@ -13,11 +13,22 @@ from .models import *
 
 class BookDetailView(DetailView):
     model = Book
+    form_class = ReviewForm
     template_name = "book/detail_book.html"
 
     def get(self, request, slug, *args, **kargs):
-        context = {"book": self.model.objects.get(slug=slug)}
+        context = {
+            "review_form": self.form_class,
+            "book": self.model.objects.get(slug=slug),
+            "reviewer": Review.objects.filter(book = self.model.objects.get(slug=slug)).order_by("-date")
+        }
         return render(request, self.template_name, context)
+
+    def post(self, request, slug, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("detail_book", slug=slug)
 
     
 
@@ -95,8 +106,14 @@ class BookUpdateView(View):
 
     
 class BookDeleteView(DeleteView):
-    template_name = "book/book_confirm_delete.html"
     model = Book
+    template_name = "book/book_confirm_delete.html"
     success_url = reverse_lazy("index")
 
-    
+
+def review_delete(request, id):
+    review = Review.objects.get(id=id)
+    book = Book.objects.get(id=review.book.id)
+    review.delete()
+    return redirect("detail_book", slug=book.slug)
+

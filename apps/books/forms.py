@@ -42,3 +42,13 @@ class BookEditForm(forms.ModelForm):
             'photo': forms.FileInput(attrs={'class':'w-4/5 mx-auto my-1 p-2 bg-red-100 border-2 border-dashed border-gray-500  shadow-md lg:w-3/5', 'name': 'photo' }),
             'file': forms.FileInput(attrs={'class':'w-4/5 mx-auto my-1 p-2 bg-red-100 border-2 border-dashed border-gray-500  shadow-md lg:w-3/5', 'name': 'file' }),
         }
+    
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = {"message", "title", "book", "author"}
+        widgets = {
+            "message": forms.Textarea(attrs={"class":"border-b border-gray-400 h-28 w-full p-2 rounded-lg hover:bg-gray-100", "name":"message", "placeholder":"reseña..."}),
+            "title": forms.TextInput(attrs={"class":"border-b border-gray-400 h-10 w-full p-2 rounded-lg hover:bg-gray-100", "name":"title", "placeholder":"titulo... (opcional)"})
+        }

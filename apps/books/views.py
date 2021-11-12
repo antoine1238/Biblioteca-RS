@@ -25,7 +25,7 @@ class BookDetailView(DetailView):
         return render(request, self.template_name, context)
 
     def post(self, request, slug, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
+        form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
             return redirect("detail_book", slug=slug)
@@ -117,3 +117,14 @@ def review_delete(request, id):
     review.delete()
     return redirect("detail_book", slug=book.slug)
 
+
+class ReviewUpdateView(View):
+    model = Review
+    form_class = ReviewForm
+
+    def post(self, request, id, slug, *args, **kwargs):
+        review = self.model.objects.get(id = id)
+        form = self.form_class(request.POST, instance = review)
+        if form.is_valid():
+            form.save()
+            return redirect("detail_book", slug=slug)

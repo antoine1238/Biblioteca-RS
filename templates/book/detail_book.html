@@ -86,7 +86,12 @@
                     {{review_form.message}}
 
                     <!-- botón -->
-                    <button class="text-center p-2 bg-blue-400 text-white rounded-lg">Publicar</button>
+                    {% if user.is_authenticated %}
+                        <button class="text-center p-2 bg-blue-400 text-white rounded-lg">Publicar</button>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-center p-2 bg-blue-400 text-white rounded-lg">Publicar</a>
+                    {% endif %}
+                        
                 </form>
             </div>
 
@@ -123,23 +128,86 @@
                                 </a>
                                 
                                 <!-- nombre del autor y fecha de comenterio -->
-                                <div class="text-sm font-semibold">{{r.author.first_name}} • <span class="font-normal">{{r.date}}</span></div>
+                                <div class="text-sm font-semibold">{{r.author.first_name}} • <span class="font-normal">{{r.date.day}}/{{r.date.month}}/{{r.date.year}}</span></div>
                             </div>
 
-                            <!-- eliminacion, edicion -->
+                            <!-- Edicion eliminacion,-->
                             {% if user.is_authenticated %}
                                 {% if request.user.username == r.author.username %}
                                     <div class="text-right">
-                                        <a href="#" class="p-2 rounded-lg bg-blue-400 hover:bg-blue-500 text-white">editar</a>
-                                        <a href="{% url 'delete_review' r.id %}" class="p-2 rounded-lg bg-red-400 hover:bg-red-500 text-white">Eliminar</a>
+                                        <!-- modal body -->
+                                        <div x-data="{ showModal : false, showDelete : false }" class="flex lg:flex-none">
+
+                                            <!-- Button editar-eliminar-->
+                                            <button @click="showModal = !showModal" class="px-4 py-2 text-sm bg-blue-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white focus:outline-none focus:ring-0 hover:bg-gray-50 hover:text-black focus:bg-indigo-50 focus:text-indigo">Editar</button>
+                                            <button @click="showDelete = !showDelete" class="px-4 py-2 text-sm bg-red-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white focus:outline-none focus:ring-0 hover:bg-gray-50 hover:text-black focus:bg-indigo-50 focus:text-indigo">Eliminar</button>
+                                    
+                                            <!-- Edit Form -->
+                                            <div x-show="showModal" class="fixed text-gray-500 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0" x-transition:enter="transition ease duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                                <!-- Modal -->
+                                                <div x-show="showModal" class="bg-white rounded-xl shadow-2xl p-6 w-11/12 lg:w-7/12 mx-10" @click.away="showModal = false" x-transition:enter="transition ease duration-100 transform" x-transition:enter-start="opacity-0 scale-90 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease duration-100 transform" x-transition:leave-start="opacity-100 scale-100 translate-y-0" x-transition:leave-end="opacity-0 scale-90 translate-y-1">
+                                                    
+                                                    <!-- formulario de reseña -->
+                                                    <button @click="showModal = !showModal" class="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-700 focus:outline-none focus:ring-0 font-bold hover:bg-gray-200 focus:bg-indigo-50 focus:text-indigo">X</button>
+                                                    <div class="bg-white my-5 lg:my-10 p-3 rounded-lg text-black border-l border-r border-gray-400">
+
+                                                        <h1 class="text-center font-bold border-b rounded-lg border-gray-400 text-xl text-gray-800"></h1>
+
+                                                        <!-- form -->
+                                                        <form method="POST" action="{% url 'edit_review' r.id book.slug %}" class="border-gray-400 grid grid-cols-1 gap-2 p-3">
+                                                            {% csrf_token %}
+
+                                                            <!-- author -->
+                                                            {% if user.is_authenticated %}
+                                                                <input type="text" name="author" class="hidden" value="{{request.user.id}}">
+                                                            {% endif %}
+                                                                
+                                                            <!-- book -->
+                                                            <input type="text" name="book" class="hidden" value="{{book.id}}">
+                                                            
+                                                            <!-- title -->
+                                                            <input type="text" class="border-b border-gray-400 h-10 w-full p-2 rounded-lg hover:bg-gray-200" value="{{r.title}}" name="title" placeholder="titulo... (opcional)">
+                                                            
+                                                            <!-- mensaje -->
+                                                            <textarea class="border-b border-gray-400 h-28 w-full p-2 rounded-lg hover:bg-gray-200" name="message" placeholder="reseña... ">{{r.message}}</textarea>
+
+                                                            <!-- botón -->
+                                                            <button type="submit" class="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-700 focus:outline-none focus:ring-0 font-semibold hover:bg-blue-400 hover:text-white focus:bg-indigo-50 focus:text-indigo">Guardar cambios</button>
+                                                        </form>
+                                                    </div>
+                                                    
+                                                    <!-- Boton cancelar o guardar cambios-->
+                                                    <div class="text-right space-x-5 mt-5">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Delete confirm -->
+                                            <div x-show="showDelete" class="fixed text-gray-500 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0" x-transition:enter="transition ease duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                                <!-- Modal -->
+                                                <div x-show="showDelete" class="bg-white rounded-xl shadow-2xl p-6 w-11/12 lg:w-5/12 mx-10" @click.away="showDelete = false" x-transition:enter="transition ease duration-100 transform" x-transition:enter-start="opacity-0 scale-90 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease duration-100 transform" x-transition:leave-start="opacity-100 scale-100 translate-y-0" x-transition:leave-end="opacity-0 scale-90 translate-y-1">
+                                                <button @click="showDelete = !showDelete" class="px-4 py-2 text-sm bg-gray-100 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-500 focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">X</button>
+                                                    
+                                                    <!-- texto -->
+                                                    <h1 class="text-center font-bold text-xl">¿seguro que quieres eliminar el comentario.?</h1>
+                                                   
+                                                    <!-- boton cancelar-eliminar-->
+                                                    <div class="text-center space-x-5 my-5">
+                                                        <a href="{% url 'delete_review' r.id %}" class="px-4 py-2 text-sm bg-red-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white hover:text-black focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Eliminar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 {% endif %}
                             {% endif %}
+
                         </div>
                     </div>
                 </div>
                 <br>
             {% endfor %}
+            <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         </div>
     </div>
 </section>

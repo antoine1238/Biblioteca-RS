@@ -10,3 +10,4 @@ class AuthorAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Author, AuthorAdmin)
+admin.site.register(Relationship)

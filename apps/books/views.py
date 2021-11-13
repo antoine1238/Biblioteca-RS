@@ -12,6 +12,7 @@ from .models import *
 
 
 class BookDetailView(DetailView):
+    """renders the content of the book, and allows to create the reviews of other authors"""
     model = Book
     form_class = ReviewForm
     template_name = "book/detail_book.html"
@@ -33,21 +34,19 @@ class BookDetailView(DetailView):
     
 
 class BookCreateView(CreateView):
+    """ Creation of books and also does not allow uploading to the "file" field files that are not type PDF. """
     model = Book
     form_class = BookForm
     template_name = "book/create_book.html"
-
     
     def get_context_data(self, **kwargs):
         context = {
-            "categories": Category.objects.all(),
             "form": self.form_class
         }
         return context
     
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.get_context_data())
-
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
@@ -63,12 +62,12 @@ class BookCreateView(CreateView):
             else:
                 form.save()
                 return redirect("index")
-                
         else:
             return render(request, self.template_name, self.get_context_data())
 
 
 class BookUpdateView(View):
+    """ To update the data of the book, like create, this does not allow uploading files that are not type pdf. """
     model = Book
     form_class = BookEditForm
     template_name = "book/edit_book.html"
@@ -106,12 +105,14 @@ class BookUpdateView(View):
 
     
 class BookDeleteView(DeleteView):
+    """ Simple removal """
     model = Book
     template_name = "book/book_confirm_delete.html"
     success_url = reverse_lazy("index")
 
 
 def review_delete(request, id):
+    """ Deletion and redirection to the book detail where I was using the book slug. """
     review = Review.objects.get(id=id)
     book = Book.objects.get(id=review.book.id)
     review.delete()
@@ -119,6 +120,7 @@ def review_delete(request, id):
 
 
 class ReviewUpdateView(View):
+    """ To be able to modify the reviews published in the details of the corresponding book. """
     model = Review
     form_class = ReviewForm
 

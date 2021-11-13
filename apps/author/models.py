@@ -7,6 +7,9 @@ from django.db import models
 # py
 import os
 
+#models 
+from apps.books.models import Book
+
 # vars
 COUNTRIES = (
         ("VEN", "Venezolano/a"),
@@ -102,9 +105,31 @@ class Author(AbstractBaseUser):
         return True
             
     def has_module_perms(self, app_label):                
-        return True
+        return True 
+
+    def book_count(self):
+        book_count = len(Book.objects.filter(author=self.id))
+        return book_count
+
+    def user_followers_count(self):
+        user_followers_count = len(Relationship.objects.filter(to_user=self.username))
+        return user_followers_count
+    
+    def users_who_follow_count(self):
+        Users_who_follow_count = len(Relationship.objects.filter(from_user=self.username))
+        return Users_who_follow_count
 
     @property
     def is_staff(self):   
         """to assign the user's permission level"""                                 
         return self.is_admin
+
+
+class Relationship(models.Model):
+    from_user = models.CharField("usuario que sigue", max_length=100, null=False, blank=False)
+    to_user = models.CharField("usuario al que siguen", max_length=100, null=False, blank=False)
+
+    def __str__(self):
+        return f"{self.from_user} sigue a {self.to_user}"
+
+   

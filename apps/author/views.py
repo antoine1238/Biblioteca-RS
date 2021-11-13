@@ -104,10 +104,10 @@ class AuthorCreateView(View):
                 return render(request, self.template_name, context)
             else:
                 form.save()
-                return redirect("index")
+                return redirect("login")
         else:
             context = {
-                "error": "los valores ingresados no son validos",
+                "error": "El usuario o email ya existen, intenta con otro",
                 "form": self.form_class
             }
             return render(request, self.template_name, context)

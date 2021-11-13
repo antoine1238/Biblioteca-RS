@@ -74,6 +74,12 @@ class Author(AbstractBaseUser):
     sex = models.CharField("Gender", max_length=3, choices=SEX, null=True, blank=True)
     is_admin = models.BooleanField(default=False)
 
+    # social media links
+    facebook = models.URLField("facebook link", null=True, blank=True)
+    twiter = models.URLField("facebook link", null=True, blank=True)
+    instagram = models.URLField("facebook link", null=True, blank=True)
+    github = models.URLField("facebook link", null=True, blank=True)
+
     objects = AuthorManager()
 
     USERNAME_FIELD = "username"
@@ -118,6 +124,25 @@ class Author(AbstractBaseUser):
     def users_who_follow_count(self):
         Users_who_follow_count = len(Relationship.objects.filter(from_user=self.username))
         return Users_who_follow_count
+    
+    def users_who_follow_names(self):
+        Users_who_follow = Relationship.objects.filter(from_user=self.username)
+        lista = []
+        for i in Users_who_follow:
+            lista.append(i.to_user)
+        return lista
+    
+    def users_who_follow_ids(self):
+        Users_who_follow = Relationship.objects.filter(from_user=self.username)
+        lista_names = []
+        lista = []
+        for i in Users_who_follow:
+            lista_names.append(i.to_user)
+
+        for i in lista_names:
+            obj = Author.objects.get(username = i)
+            lista.append(obj.id)
+        return lista
 
     @property
     def is_staff(self):   

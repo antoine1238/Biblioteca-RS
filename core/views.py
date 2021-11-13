@@ -7,16 +7,21 @@ from apps.books.models import Book, Category, Review
 from apps.author.models import Author
 
 class Home(View):
-    
-    def get_context_data(self, **kwargs):
+    template_name = "index.html"
+
+    def get(self, request, *args, **kwargs):
+        author = Author.objects.filter(id=request.user.id).first()   
+        
+        if author:
+            ids = author.users_who_follow_ids()
+            books = Book.objects.filter(author__in=ids) 
+
         context = {
             "books": Book.objects.all(),
             "categories": Category.objects.all(),
+            "books_follow": books
         }
-        return context
-
-    def get(self, request, *args, **kwargs):
-        return render(request, "index.html", self.get_context_data())
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         busqueda = request.POST["search"]
@@ -24,7 +29,7 @@ class Home(View):
             "books": Book.objects.filter(title__icontains = busqueda),
             "categories": Category.objects.all(),
         }   
-        return render(request, "index.html", context)
+        return render(request, self.template_name, context)
 
 
 

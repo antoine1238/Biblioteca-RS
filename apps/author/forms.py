@@ -93,7 +93,8 @@ class AuthorForm(forms.ModelForm):
 class AuthorUpdateForm(forms.ModelForm):
     class Meta:
         model = Author
-        fields = ["username", "email", "first_name", "last_name", "background_photo", "photo", "description", "big_description", "nationality", "sex"]
+        fields = ["username", "email", "first_name", "last_name", "background_photo", "photo", "description", "big_description", "nationality", "sex",
+                    "facebook", "twiter", "instagram", "github"]
         widgets = { 
             'username': forms.TextInput(attrs={
                 "required": "required",
@@ -145,5 +146,5 @@ class AuthorUpdateForm(forms.ModelForm):
             'sex': forms.Select(attrs={
                 'class':'border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150', 
                 'name':'sex', 
-                "placeholder": "usuario"}),
+                "placeholder": "usuario"}),                
         }

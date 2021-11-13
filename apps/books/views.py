@@ -31,8 +31,7 @@ class BookDetailView(DetailView):
         if form.is_valid():
             form.save()
             return redirect("detail_book", slug=slug)
-
-    
+ 
 
 class BookCreateView(CreateView):
     """ Creation of books and also does not allow uploading to the "file" field files that are not type PDF. """

@@ -76,7 +76,7 @@
           <hr class="mt-6 border-b-1 border-blueGray-300">
   
           <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-            datos secundarios 
+            datos secundarios (opcionales)
           </h6>
           <div class="flex flex-wrap">
 
@@ -140,11 +140,48 @@
               </div>
             </div>
           </div>
+
+          <!-- facebook-->
+          <div class="w-full lg:w-3/12 px-4">
+            <div class="relative w-full mb-3">
+              <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                Facebook link
+              </label>
+              <input type="text" name="facebook" value="{{form.facebook.value}}" minlength="12" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+            </div>
+          </div>
+          <!-- Instagram-->
+          <div class="w-full lg:w-3/12 px-4">
+            <div class="relative w-full mb-3">
+              <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                Instagram link
+              </label>
+              <input type="text" name="instagram" value="{{form.instagram.value}}" minlength="12" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+            </div>
+          </div>
+          <!-- Twiter-->
+          <div class="w-full lg:w-3/12 px-4">
+            <div class="relative w-full mb-3">
+              <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                Twiter link
+              </label>
+              <input type="text" name="twiter" value="{{form.twiter.value}}" minlength="12" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+            </div>
+          </div>
+          <!-- Github-->
+          <div class="w-full lg:w-3/12 px-4">
+            <div class="relative w-full mb-3">
+              <label class="block capitalize text-blueGray-600 text-xs font-bold mb-2" >
+                Github link
+              </label>
+              <input type="text" name="github" value="{{form.github.value}}" minlength="12" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+            </div>
+          </div>
           
           <!-- botón -->
           <div class="w-full lg:w-12/12 px-4">
             <div class="relative w-full mb-3">
-              <button type="submit" class="block capitalize mx-auto w-full  p-3 bg-green-200 text-blueGray-600 text-xs font-bold mb-2">
+              <button type="submit" class="block capitalize mx-auto w-full  p-3 bg-blue-500 text-white text-base font-bold my-2 mb-2 hover:bg-blue-600">
                 Guardar cambios
               </button>
             </div>

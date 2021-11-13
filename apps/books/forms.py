@@ -49,6 +49,14 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = {"message", "title", "book", "author"}
         widgets = {
-            "message": forms.Textarea(attrs={"class":"border-b border-gray-400 h-28 w-full p-2 rounded-lg hover:bg-gray-100", "name":"message", "placeholder":"reseña..."}),
-            "title": forms.TextInput(attrs={"class":"border-b border-gray-400 h-10 w-full p-2 rounded-lg hover:bg-gray-100", "name":"title", "placeholder":"titulo... (opcional)"})
+            "message": forms.Textarea(attrs={"class":"border-b border-gray-400 h-28 w-full shadow-lg p-2 rounded-lg hover:bg-gray-100", "name":"message", "placeholder":"reseña..."}),
+            "title": forms.TextInput(attrs={"class":"border-b border-gray-400 h-10 w-full shadow-lg p-2 rounded-lg hover:bg-gray-100", "name":"title", "placeholder":"titulo... (opcional)"})
+        }
+
+class StarForm(forms.ModelForm):
+    class Meta:
+        model = Star
+        fields = {"author", "book", "stars"}
+        widgets = {
+            "stars": forms.Select(attrs={"class":"border-b border-gray-400 w-full p-2 rounded-lg hover:bg-gray-100 shadow-lg", "name":"stars"})
         }

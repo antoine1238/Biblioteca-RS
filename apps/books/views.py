@@ -19,6 +19,7 @@ class BookDetailView(DetailView):
 
     def get(self, request, slug, *args, **kargs):
         context = {
+            "FormStars": StarForm,
             "review_form": self.form_class,
             "book": self.model.objects.get(slug=slug),
             "reviewer": Review.objects.filter(book = self.model.objects.get(slug=slug)).order_by("-date")
@@ -130,3 +131,24 @@ class ReviewUpdateView(View):
         if form.is_valid():
             form.save()
             return redirect("detail_book", slug=slug)
+
+
+def stars(request, slug):
+    """ the first time the simple punctuation is created. but if we score it again we get the author and the book to get the "Star" object and thus update its value. """
+    # vars
+    author = request.user.id
+    book = Book.objects.get(slug=slug)
+
+    star = Star.objects.filter(author = author, book = book).first()
+
+    if star:
+        form = StarForm(request.POST, instance=star)
+        if form.is_valid():
+            form.save()
+            return redirect("detail_book",slug=slug)
+    else:
+        form = StarForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("detail_book",slug=slug)
+            

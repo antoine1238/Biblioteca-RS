@@ -43,7 +43,6 @@ class AuthorsView(View):
             return render(request, self.template_name, context)
 
 
-
 class AuthorDetailView(DetailView):
     """ In addition to showing the details of the authors, it also shows the books that have been published. """
     model = Author
@@ -76,7 +75,6 @@ class AuthorDetailView(DetailView):
             "books": Book.objects.filter(author__username = username)
         }
         return render(request, self.template_name, context)
-
 
 
 class AuthorCreateView(View):
@@ -145,7 +143,6 @@ class AuthorEditView(View):
             
 
 # follow sistem
-
 def follow(request, username):
     """ Here depending on the variable "action" determine if I can follow or unfollow an author .. create or delete object. """
     if request.method == "POST":

@@ -47,6 +47,22 @@ class Book(models.Model):
         from django.urls import reverse
         return reverse('detail_book', kwargs={'slug': self.slug})
 
+    def get_star_average(self):
+        """ To get the average stars it owns and just leaving it a decimal so it doesn't look ugly :) """
+        stars = Star.objects.filter(book=self.id)
+        stars_count = len(Star.objects.filter(book=self.id))
+        average = 0
+
+        if stars_count > 0:
+            for i in stars:
+                average = average + int(i.stars)
+
+            average = average/stars_count
+            average = round(average, 1) 
+        
+        return average
+        
+
     def save(self, *args, **kwargs): 
         """ To save the slug and short_synopsis automatically.""" 
         self.short_synopsis = self.synopsis[:255]
@@ -83,17 +99,17 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.author} / {self.book}"
 
-STARS = (
-    ("1", "una estrella"),
-    ("2", "dos estrellas"),
-    ("3", "tres estrellas"),
-    ("4", "cuatro estrellas"),
-    ("5", "cinco estrellas"),
-)
     
 class Star(models.Model):
     """ stars that will rate the quality of the book. """
-    stars = models.CharField(max_length=1, choices=STARS, null=False, blank=False)
+    class Stars(models.IntegerChoices):
+        UNA_ESTRELLA = 1
+        DOS_ESTRELLAS = 2
+        TRES_ESTRELLAS = 3
+        CUATRO_ESTRELLAS = 4
+        CINCO_ESTRELLAS = 5
+
+    stars = models.IntegerField(choices=Stars.choices)
     author = models.ForeignKey("author.Author", on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
@@ -104,4 +120,4 @@ class Star(models.Model):
         verbose_name_plural = 'Stars'
 
     def __str__(self):
-        return f"{self.book}-{self.author} <{self.stars} stars>"
+        return f"LIBRO: {self.book.title} -- AUTHOR: {self.author.username} -- ESTRELLAS: {self.stars}"

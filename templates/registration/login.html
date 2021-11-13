@@ -58,24 +58,29 @@
                 <div class="absolute bg-black opacity-60 inset-0 z-0"></div>
             </div>
             <div class="w-full py-6 z-20">
+
                 <!-- icono antoine -->
                 <h1 class="my-2">
                   <img class="h-21 w-40 mx-auto" src="https://antoinemanuel.herokuapp.com/static/logo_original.png" alt="icon">
                 </h1>
+
+                <!-- links a redes -->
                 <div class="py-2 space-x-2">
-                  <span class="w-10 h-10 items-center justify-center inline-flex rounded-full font-bold text-white border-white lg:text-black text-lg border-2 lg:border-black">f</span>
-                  <span class="w-10 h-10 items-center justify-center inline-flex rounded-full font-bold text-white border-white lg:text-black text-lg border-2 lg:border-black">in</span>
-                  <span class="w-10 h-10 items-center justify-center inline-flex rounded-full font-bold text-white border-white lg:text-black text-lg border-2 lg:border-black">Git</span>
+                  <a href="https://www.facebook.com/antoine.manuelgutierrez" target="_BLANCK" class="w-10 h-10 items-center justify-center inline-flex rounded-full font-bold text-white border-white lg:text-black text-lg border-2 lg:border-black">f</a>
+                  <a href="https://www.linkedin.com/in/antoine-manuel-5a28b7197/" target="_BLANCK" class="w-10 h-10 items-center justify-center inline-flex rounded-full font-bold text-white border-white lg:text-black text-lg border-2 lg:border-black">in</a>
+                  <a href="https://github.com/antoine1238" target="_BLANCK" class="w-10 h-10 items-center justify-center inline-flex rounded-full font-bold text-white border-white lg:text-black text-lg border-2 lg:border-black">Git</a>
                 </div>
+
+                <!-- encabezado -->
                 <p class="text-white  lg:text-black font-bold">
                     Biblioteca RS 
                 </p>
                 <form action="{% url 'login' %}" method="POST" class="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
                     {% csrf_token %}
 
-                    <!-- email -->
+                    <!-- username -->
                     <div class="pb-2 pt-4">
-                        <input type="text" name="username" id="email" placeholder="Email.." class="block w-full p-4 text-lg rounded-lg bg-black lg:bg-gray-400 text-white lg:text-black placeholder-white lg:placeholder-black">
+                        <input type="text" name="username" placeholder="Username.." class="block w-full p-4 text-lg rounded-lg bg-black lg:bg-gray-400 text-white lg:text-black placeholder-white lg:placeholder-black">
                     </div>
 
                     <!-- password -->
@@ -90,7 +95,7 @@
 
                     <!-- boton -->
                     <div class="px-4 pb-2 pt-4">
-                        <button type="submit" class="uppercase block w-full p-4 text-lg rounded-full bg-indigo-600 hover:bg-indigo-700 focus:outline-none">sign in</button>
+                        <button type="submit" class="uppercase block w-full p-4 text-lg rounded-full bg-indigo-600 hover:bg-indigo-700 focus:outline-none">Ingresar</button>
                     </div>
 
                     <!-- creacion de usuario -->

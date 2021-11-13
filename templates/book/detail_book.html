@@ -48,7 +48,46 @@
             </div>
             <div class="w-full my-5 md:w-4/5 text-left p-6 md:p-4 space-y-2 lg:my-0">
                 <!-- nombres -->
-                <p class="text-xl text-gray-700 font-bold capitalize">{{book.title}}</p>
+                <p class="text-xl text-gray-700 font-bold capitalize">{{book.title}} <span class="ml-4 text-gray-600">⭐{{book.get_star_average}}</span></p> 
+                    
+                    {% if user.is_authenticated %}                        
+                    <!-- modal body -->
+                    <div x-data="{ showEdit : false }" class="flex lg:flex-none">
+
+                        <!-- Button editar-eliminar-->
+                        <button @click="showEdit = !showEdit" class="px-4 py-1 text-sm bg-yellow-300 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text- focus:outline-none focus:ring-0 hover:bg-yellow-400 hover:text-black focus:bg-indigo-50 focus:text-indigo">Puntuar</button>
+                
+                        <!-- Modal -->
+                        <div x-show="showEdit" class="fixed text-gray-500 flex items-center justify-center overflow-auto z-50 bg-black bg-opacity-40 left-0 right-0 top-0 bottom-0" x-transition:enter="transition ease duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                            <div x-show="showEdit" class="bg-white rounded-xl shadow-2xl p-6 w-11/12 lg:w-4/12 mx-10" @click.away="showEdit = false" x-transition:enter="transition ease duration-100 transform" x-transition:enter-start="opacity-0 scale-90 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease duration-100 transform" x-transition:leave-start="opacity-100 scale-100 translate-y-0" x-transition:leave-end="opacity-0 scale-90 translate-y-1">
+                                
+                                <!-- formulario de estrellas -->
+                                <button @click="showEdit = !showEdit" class="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-700 focus:outline-none focus:ring-0 font-bold hover:bg-gray-200 focus:bg-indigo-50 focus:text-indigo">X</button>
+                                <div class="bg-white my-5 lg:my-10 p-3 shadow-lg rounded-lg text-black border-r-2 border-l-2 border-t-2 border-gray-400">
+
+                                    <!-- form -->
+                                    <form method="POST" action="{% url 'stars' book.slug %}" class="grid grid-cols-1 gap-2 p-2">
+                                        {% csrf_token %}
+                                        
+                                        <!-- author -->
+                                        <input type="text" name="author" class="hidden" value="{{request.user.id}}">
+
+                                        <!-- book -->
+                                        <input type="text" name="book" class="hidden" value="{{book.id}}">
+
+                                        <!-- stars -->
+                                        {{FormStars.stars}}
+                                        
+                                        <!-- botón -->
+                                        <button type="submit" class="px-4 shadow-lg py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-700 focus:outline-none focus:ring-0 font-semibold hover:bg-yellow-400 focus:bg-indigo-50 focus:text-indigo">Guardar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="px-4 py-1 text-sm bg-yellow-300 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text- focus:outline-none focus:ring-0 hover:bg-yellow-400 hover:text-black focus:bg-indigo-50 focus:text-indigo">Puntuar</a>
+                {% endif %}
 
                 <!-- email -->
                 <a href="#" class="text-base text-gray-400 font-normal capitalize">escrito por: {{book.author_book}}</a>
@@ -87,9 +126,9 @@
 
                     <!-- botón -->
                     {% if user.is_authenticated %}
-                        <button class="text-center p-2 bg-blue-400 text-white rounded-lg">Publicar</button>
+                        <button class="text-center p-2 bg-blue-400 text-white rounded-lg shadow-lg">Publicar</button>
                     {% else %}
-                        <a href="{% url 'login' %}" class="text-center p-2 bg-blue-400 text-white rounded-lg">Publicar</a>
+                        <a href="{% url 'login' %}" class="text-center p-2 bg-blue-400 text-white rounded-lg shadow-lg">Publicar</a>
                     {% endif %}
                         
                 </form>
@@ -172,7 +211,7 @@
                                                             <textarea class="border-b border-gray-400 h-28 w-full p-2 rounded-lg hover:bg-gray-200" name="message" placeholder="reseña... ">{{r.message}}</textarea>
 
                                                             <!-- botón -->
-                                                            <button type="submit" class="px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-700 focus:outline-none focus:ring-0 font-semibold hover:bg-blue-400 hover:text-white focus:bg-indigo-50 focus:text-indigo">Guardar cambios</button>
+                                                            <button type="submit" class=" shadow-lg px-4 py-2 text-sm bg-white rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-gray-700 focus:outline-none focus:ring-0 font-semibold hover:bg-blue-400 hover:text-white focus:bg-indigo-50 focus:text-indigo">Guardar cambios</button>
                                                         </form>
                                                     </div>
                                                     
@@ -193,7 +232,7 @@
                                                    
                                                     <!-- boton cancelar-eliminar-->
                                                     <div class="text-center space-x-5 my-5">
-                                                        <a href="{% url 'delete_review' r.id %}" class="px-4 py-2 text-sm bg-red-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white hover:text-black focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Eliminar</a>
+                                                        <a href="{% url 'delete_review' r.id %}" class="px-4 shadow-lg py-2 text-sm bg-red-400 rounded-xl border transition-colors duration-150 ease-linear border-gray-200 text-white hover:text-black focus:outline-none focus:ring-0 font-bold hover:bg-gray-50 focus:bg-indigo-50 focus:text-indigo">Eliminar</a>
                                                     </div>
                                                 </div>
                                             </div>

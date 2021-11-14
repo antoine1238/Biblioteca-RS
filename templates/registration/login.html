@@ -38,7 +38,7 @@
         <div class="lg:flex w-1/2 hidden bg-gray-500 bg-no-repeat bg-cover relative items-center" style="background-image: url(https://wallpaperset.com/w/full/d/b/1/359238.jpg);">
             <div class="absolute bg-black opacity-60 inset-0 z-0"></div>
             <div class="w-full px-24 z-10">
-                <h1 class="text-5xl font-bold text-left tracking-wide">Bliblioteca RS</h1>
+                <h1 class="text-5xl font-bold text-left tracking-wide"><a href="{% url 'index' %}">Bliblioteca RS</a></h1>
                 <p class="text-3xl my-4">Consigue Conoce y Descarga nuevos libros gratuitamente y comparte una reseña para los proximos lectores</p>
             </div>
             <div class="bottom-0 absolute p-4 text-center right-0 left-0 flex justify-center space-x-4">
@@ -73,24 +73,24 @@
 
                 <!-- encabezado -->
                 <p class="text-white  lg:text-black font-bold">
-                    Biblioteca RS 
+                   <a href="{% url 'index' %}">Biblioteca RS </a> 
                 </p>
                 <form action="{% url 'login' %}" method="POST" class="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
                     {% csrf_token %}
 
                     <!-- username -->
                     <div class="pb-2 pt-4">
-                        <input type="text" name="username" placeholder="Username.." class="block w-full p-4 text-lg rounded-lg bg-black lg:bg-gray-400 text-white lg:text-black placeholder-white lg:placeholder-black">
+                        <input type="text" name="username" placeholder="Username.." class="block w-full border-r-2 border-l-2 border-blue-600 p-4 text-lg rounded-lg bg-black lg:bg-gray-300 text-white lg:text-black placeholder-white lg:placeholder-black">
                     </div>
 
                     <!-- password -->
                     <div class="pb-2 pt-4">
-                        <input class="block w-full p-4 text-lg rounded-lg bg-black lg:bg-gray-400 text-white lg:text-black placeholder-white lg:placeholder-black" type="password" name="password" id="password" placeholder="Password..">
+                        <input class="block w-full border-r-2 border-l-2 border-blue-600 p-4 text-lg rounded-lg bg-black lg:bg-gray-300 text-white lg:text-black placeholder-white lg:placeholder-black" type="password" name="password" id="password" placeholder="Password..">
                     </div>
 
                     <!-- restaurar contraseña -->
                     <div class="text-right text-gray-300 hover:text-gray-200 lg:text-gray-600 hover:underline lg:hover:text-gray-900">
-                        <a href="#">Forgot your password?</a>
+                        <a href="{% url 'password_reset' %}">Olvidaste tu contraseña?</a>
                     </div>
 
                     <!-- boton -->

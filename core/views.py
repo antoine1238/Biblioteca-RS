@@ -15,6 +15,8 @@ class Home(View):
         if author:
             ids = author.users_who_follow_ids()
             books = Book.objects.filter(author__in=ids) 
+        else:
+            books = None
 
         context = {
             "books": Book.objects.all(),

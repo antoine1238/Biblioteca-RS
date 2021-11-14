@@ -72,13 +72,16 @@ class Author(AbstractBaseUser):
     big_description = models.TextField("big description", null=True, blank=True)
     nationality = models.CharField("Author's nationality", max_length=3, choices=COUNTRIES, null=True, blank=True)
     sex = models.CharField("Gender", max_length=3, choices=SEX, null=True, blank=True)
-    is_admin = models.BooleanField(default=False)
 
     # social media links
     facebook = models.URLField("facebook link", null=True, blank=True)
     twiter = models.URLField("facebook link", null=True, blank=True)
     instagram = models.URLField("facebook link", null=True, blank=True)
     github = models.URLField("facebook link", null=True, blank=True)
+
+    # automatic
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     objects = AuthorManager()
 
@@ -156,5 +159,3 @@ class Relationship(models.Model):
 
     def __str__(self):
         return f"{self.from_user} sigue a {self.to_user}"
-
-   
